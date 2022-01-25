@@ -91,9 +91,9 @@ export default function PaginaInicial() {
                             sm: 'row',
                         },
                         width: '100%', maxWidth: '700px',
-                        borderRadius: '5px', padding: '32px', margin: '16px',
-                        boxShadow: '0 2px 10px 0 rgb(0 0 0 / 20%)',
-                        backgroundColor: appConfig.theme.colors.neutrals[700],
+                        borderRadius: '5px', border: 'solid 2px', padding: '32px', margin: '16px',
+                        boxShadow: '0 2px 10px 0 rgb(0 0 0 / 30%)',
+                        backgroundColor: appConfig.theme.colors.neutrals["003"],
                     }}
                 >
                     {/* Formulário */}
@@ -113,7 +113,7 @@ export default function PaginaInicial() {
                             fullWidth
                             textFieldColors={{
                                 neutral: {
-                                    textColor: appConfig.theme.colors.neutrals[200],
+                                    textColor: appConfig.theme.colors.neutrals[300],
                                     mainColor: appConfig.theme.colors.neutrals[900],
                                     mainColorHighlight: appConfig.theme.colors.neutrals[200],
                                     backgroundColor: appConfig.theme.colors.neutrals[800],
@@ -143,9 +143,11 @@ export default function PaginaInicial() {
                             alignItems: 'center',
                             maxWidth: '200px',
                             padding: '16px',
-                            backgroundColor: appConfig.theme.colors.neutrals[800],
+                            gap: "0.75rem",
+                            width: "100%",
+                            // backgroundColor: appConfig.theme.colors.neutrals[800],
                             border: '1px solid',
-                            borderColor: appConfig.theme.colors.neutrals[999],
+                            // borderColor: appConfig.theme.colors.neutrals[999],
                             borderRadius: '10px',
                             flex: 1,
                             minHeight: '240px',
