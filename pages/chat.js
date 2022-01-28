@@ -106,6 +106,14 @@ export default function ChatPage() {
                                 color: appConfig.theme.colors.neutrals[300],
                             }}
                         />
+                        <Button styleSheet={{maxWidth: '100px',  marginBottom: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}
+                            onClick={() => handleNovaMensagem(mensagem)}
+                            variant='tertiary'
+                            colorVariant='neutral'
+                            label='Enviar'
+                            fullWidth
+                            
+                        />
                     </Box>
                 </Box>
             </Box>
