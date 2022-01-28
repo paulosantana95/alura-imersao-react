@@ -81,8 +81,11 @@ export default function PaginaInicial() {
                         as="form"
                         onSubmit={function(event) {
                             event.preventDefault();
-                            console.log('Alguém submeteu o form');
-                            roteamento.push('/chat');
+                            if (username.length <= 2) {
+                                roteamento.push('/404');
+                            } else {
+                                roteamento.push('/chat');
+                            }
                             //maneira tradicional de mudança de pagina
                             // window.location.href = '/chat';
                         }}
