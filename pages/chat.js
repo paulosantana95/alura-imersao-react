@@ -1,11 +1,29 @@
 import { Box, Text, TextField, Image, Button } from '@skynexui/components';
 import React from 'react';
+import { useState } from 'react/cjs/react.development';
 import appConfig from '../config.json';
 
 export default function ChatPage() {
     // Sua lógica vai aqui
+    const [mensagem, setMensagem] = React.useState('');
+    const [listaDeMensagens, setListaDeMensagens] = React.useState([]);
     
     // ./Sua lógica vai aqui
+    function handleNovaMensagem(novaMensagem) {
+        const mensagem = {
+            id: listaDeMensagens.length + 1,
+            de: 'paulosantana95',
+            texto: novaMensagem,
+        };
+        // Chamada de um back end
+        setListaDeMensagens([
+            mensagem,
+            ...listaDeMensagens,
+        ]);
+        setMensagem('');
+    }
+    
+    
     return (
         <Box
             styleSheet={{
@@ -44,8 +62,15 @@ export default function ChatPage() {
                     }}
                 >
 
-                    {/* <MessageList mensagens={[]} /> */}
-
+                    <MessageList mensagens={listaDeMensagens} />
+                    {/* {listaDeMensagens.map((mensagemAtual)=> {
+                        console.log(mensagemAtual)
+                        return(
+                            <li key={mensagemAtual.id}>
+                                {mensagemAtual.de}: {mensagemAtual.texto}
+                            </li>
+                        )
+                    })} */}
                     <Box
                         as="form"
                         styleSheet={{
@@ -54,6 +79,20 @@ export default function ChatPage() {
                         }}
                     >
                         <TextField
+                            value={mensagem}
+                            onChange={(event) => {
+                                const valor = event.target.value;
+                                
+                                setMensagem(valor);
+                            }}
+                            onKeyPress={(event) => {
+                                if (event.key === 'Enter') {
+                                    event.preventDefault()
+                                    console.log(event);
+                                    handleNovaMensagem(mensagem);
+
+                                }
+                            }}
                             placeholder="Insira sua mensagem aqui..."
                             type="textarea"
                             styleSheet={{
@@ -64,7 +103,7 @@ export default function ChatPage() {
                                 padding: '6px 8px',
                                 backgroundColor: appConfig.theme.colors.neutrals[800],
                                 marginRight: '12px',
-                                color: appConfig.theme.colors.neutrals[200],
+                                color: appConfig.theme.colors.neutrals[300],
                             }}
                         />
                     </Box>
@@ -93,7 +132,8 @@ function Header() {
 }
 
 function MessageList(props) {
-    console.log('MessageList', props);
+    console.log(props.listaDeMensagens);
+    const [username, setUsername] = React.useState('paulosantana95');
     return (
         <Box
             tag="ul"
@@ -106,7 +146,8 @@ function MessageList(props) {
                 marginBottom: '16px',
             }}
         >
-
+            {props.mensagens.map((mensagem)=> {
+                return (
             <Text
                 key={mensagem.id}
                 tag="li"
@@ -132,7 +173,7 @@ function MessageList(props) {
                             display: 'inline-block',
                             marginRight: '8px',
                         }}
-                        src={`https://github.com/vanessametonini.png`}
+                        src={`https://github.com/${username}.png`}
                     />
                     <Text tag="strong">
                         {mensagem.de}
@@ -150,6 +191,9 @@ function MessageList(props) {
                 </Box>
                 {mensagem.texto}
             </Text>
+                );
+            })}
+            
         </Box>
     )
 }
