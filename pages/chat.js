@@ -1,27 +1,68 @@
 import { Box, Text, TextField, Image, Button } from '@skynexui/components';
 import React from 'react';
-import { useState } from 'react/cjs/react.development';
+import { useState, useEffect } from 'react/cjs/react.development';
 import appConfig from '../config.json';
+import { createClient } from '@supabase/supabase-js'
+
+
+const SUPABASE_ANNON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzgxMTMwOSwiZXhwIjoxOTU5Mzg3MzA5fQ.rCNBuFuSjmC5W-_R1I1NmreQXQbgBJFFg78C40hQ0s0';
+const SUPABASE_URL = 'https://wzscbxlvbdfbavycthcf.supabase.co';
+const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANNON_KEY);
+
+// fetch(`${SUPABASE_URL}/rest/v1/mensagens?select=*`, {
+//     headers: {
+//         'Content-Type': 'application/json',
+//         'apikey': SUPABASE_ANNON_KEY,
+//         'Autorization': 'Bearer' + SUPABASE_ANNON_KEY,
+//     }
+// })
+//     .then((res) => {
+//         return res.json();
+//     })
+//     .then((response) => {
+//         console.log(response);
+//     });
+
 
 export default function ChatPage() {
     // Sua lógica vai aqui
     const [mensagem, setMensagem] = React.useState('');
     const [listaDeMensagens, setListaDeMensagens] = React.useState([]);
+
+    React.useEffect(() => {
+        supabaseClient
+        .from('mensagens')
+        .select('*')
+        .order('id', { ascending: false })
+        .then(({ data }) => {
+            console.log('dados da consulta', data)
+            setListaDeMensagens(data)
+        });
+    }, []);
+    
+
     
     // ./Sua lógica vai aqui
     function handleNovaMensagem(novaMensagem) {
         const mensagem = {
-            id: listaDeMensagens.length + 1,
+            // id: listaDeMensagens.length + 1,
             de: 'paulosantana95',
             texto: novaMensagem,
         };
-        // Chamada de um back end
-        setListaDeMensagens([
-            mensagem,
-            ...listaDeMensagens,
-        ]);
+
+        supabaseClient
+            .from('mensagens')
+            .insert([
+                mensagem
+            ])
+            .then(({ data }) => {
+                setListaDeMensagens([
+                    data[0],
+                    ...listaDeMensagens,
+                ]);
+            });
         setMensagem('');
-    }
+    };
     
     
     return (
@@ -136,12 +177,10 @@ function Header() {
                 />
             </Box>
         </>
-    )
-}
+    )}
 
 function MessageList(props) {
-    console.log(props.listaDeMensagens);
-    const [username, setUsername] = React.useState('paulosantana95');
+    console.log(props);
     return (
         <Box
             tag="ul"
@@ -181,7 +220,7 @@ function MessageList(props) {
                             display: 'inline-block',
                             marginRight: '8px',
                         }}
-                        src={`https://github.com/${username}.png`}
+                        src={`https://github.com/${mensagem.de}.png`}
                     />
                     <Text tag="strong">
                         {mensagem.de}
